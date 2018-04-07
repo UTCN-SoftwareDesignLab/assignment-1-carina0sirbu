@@ -4,18 +4,19 @@ import java.util.List;
 
 public class Customer {
 
+    private Long id;
     private String name;
-    private long identityCard;
+    private String identityCard;
     private String persNumCode;
-    private List<Account> acc;
 
 
-    public List<Account> getAcc() {
-        return acc;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setAcc(List<Account> acc) {
-        this.acc = acc;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -27,11 +28,11 @@ public class Customer {
     }
 
 
-    public long getIdentityCard() {
+    public String getIdentityCard() {
         return identityCard;
     }
 
-    public void setIdentityCard(long identityCard1) {
+    public void setIdentityCard(String identityCard1) {
         this.identityCard = identityCard1;
     }
 
@@ -41,5 +42,10 @@ public class Customer {
 
     public void setPersNumCode(String persNumCode) {
         this.persNumCode = persNumCode;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer id " + id + ", " + name + ", with IDCard no " + identityCard + " and PNC no " + persNumCode;
     }
 }

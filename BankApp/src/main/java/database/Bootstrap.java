@@ -1,26 +1,38 @@
 package database;
 
+import model.Role;
+import model.User;
+import model.builder.UserBuilder;
+import model.validation.Notification;
+import model.validation.UserValidator;
 import repository.security.RightsRolesRepository;
 import repository.security.RightsRolesRepositoryMySQL;
+import service.user.AuthenticationServiceMySQL;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static database.Constants.Rights.RIGHTS;
+import static database.Constants.Roles.ADMINISTRATOR;
 import static database.Constants.Roles.ROLES;
 import static database.Constants.Schemas.SCHEMAS;
 import static database.Constants.getRolesRights;
 
 public class Bootstrap {
 
+    private static final String ADMIN_USERNAME = "carina.sirbu@gmail.com";
+    private static final String ADMIN_PASSWORD = "ciocoLover26";
+
     private static RightsRolesRepository rightsRolesRepository;
 
+
     public static void main(String[] args) throws SQLException{
-        dropAll();
+        //dropAll();
 
         bootstrapTables();
 
@@ -76,6 +88,7 @@ public class Bootstrap {
 
             for (String table : Constants.Tables.ORDERED_TABLES_FOR_CREATION) {
                 String createTableSQL = sqlTableCreationFactory.getCreateSQLForTable(table);
+                System.out.println(" creation " + table);
                 statement.execute(createTableSQL);
             }
         }
@@ -93,14 +106,22 @@ public class Bootstrap {
             bootstrapRoles();
             bootstrapRights();
             bootstrapRoleRight();
+
+
             bootstrapUserRoles();
+
+
+
         }
     }
 
     private static void bootstrapRoles() throws SQLException {
+
         for (String role : ROLES) {
             rightsRolesRepository.addRole(role);
+
         }
+
     }
 
     private static void bootstrapRights() throws SQLException {
@@ -124,6 +145,7 @@ public class Bootstrap {
     }
 
     private static void bootstrapUserRoles() throws SQLException {
+
 
     }
 }

@@ -9,12 +9,8 @@ import repository.security.RightsRolesRepository;
 import repository.user.AuthenticationException;
 import repository.user.UserRepository;
 
-import java.lang.reflect.Array;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import static database.Constants.Roles.EMPLOYEE;
 
@@ -30,6 +26,8 @@ public class AuthenticationServiceMySQL implements AuthenticationService {
 
     @Override
     public Notification<Boolean> register(String username, String password) {
+
+
         Role employeeRole = rightsRolesRepository.findRoleByTitle(EMPLOYEE);
 
 
@@ -38,6 +36,8 @@ public class AuthenticationServiceMySQL implements AuthenticationService {
                 .setPassword(password)
                 .setRoles(Collections.singletonList(employeeRole))
                 .build();
+
+        System.out.println(user.toString());
 
         UserValidator userValidator = new UserValidator(user);
         boolean userValid = userValidator.validate();

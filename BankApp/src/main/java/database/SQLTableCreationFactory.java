@@ -18,14 +18,13 @@ public class SQLTableCreationFactory {
                         "  creationDate datetime DEFAULT NULL," +
                         "  customerId int NOT NULL, " +
                         "  PRIMARY KEY (id)," +
-                        "  UNIQUE KEY id_UNIQUE (id)" +
-                        ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
+                        "  UNIQUE KEY id_UNIQUE (id ASC));";
 
             case CUSTOMER:
                 return "CREATE TABLE IF NOT EXISTS customer (" +
                         "  id INT NOT NULL AUTO_INCREMENT," +
                         "  name VARCHAR(200) NOT NULL," +
-                        "  identityCard int(50) NOT NULL," +
+                        "  identityCard varchar(50) NOT NULL," +
                         "  persNumCode varchar(20) NOT NULL," +
                         "  PRIMARY KEY (id)," +
                         "  UNIQUE INDEX id_UNIQUE (id ASC));";
@@ -39,6 +38,15 @@ public class SQLTableCreationFactory {
                         "  PRIMARY KEY (id)," +
                         "  UNIQUE INDEX id_UNIQUE (id ASC)," +
                         "  UNIQUE INDEX username_UNIQUE (username ASC));";
+
+            case ACTION:
+                return "CREATE TABLE IF NOT EXISTS action (" +
+                        "  id INT NOT NULL AUTO_INCREMENT," +
+                        "  date datetime DEFAULT NULL," +
+                        "  details VARCHAR(200) NOT NULL," +
+                        "  employeeId int NOT NULL," +
+                        "  PRIMARY KEY (id)," +
+                        "  UNIQUE INDEX id_UNIQUE (id ASC));";
 
             case ROLE:
                 return "  CREATE TABLE IF NOT EXISTS role (" +

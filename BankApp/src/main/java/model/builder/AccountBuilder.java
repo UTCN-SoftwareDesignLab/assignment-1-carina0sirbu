@@ -12,6 +12,11 @@ public class AccountBuilder {
         account = new Account();
     }
 
+    public AccountBuilder setId(Long id) {
+        account.setId(id);
+        return this;
+    }
+
     public AccountBuilder setType(String type) {
         account.setType(type);
         return this;
@@ -24,6 +29,11 @@ public class AccountBuilder {
 
     public AccountBuilder setCreationDate(Date date) {
         account.setCreationDate(date);
+        return this;
+    }
+
+    public AccountBuilder setCustomerId(Long id) {
+        account.setCustomerId(id);
         return this;
     }
 

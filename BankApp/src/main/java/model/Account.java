@@ -5,17 +5,17 @@ import java.util.UUID;
 
 public class Account {
 
-    private long id;
+    private Long id;
     private String type;
     private int sum;
     private Date creationDate;
-    private long customerId;
+    private Long customerId;
 
-    public long getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(long customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
@@ -35,11 +35,11 @@ public class Account {
         this.creationDate = creationDate;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -49,5 +49,10 @@ public class Account {
 
     public void setSum(int sum) {
         this.sum = sum;
+    }
+
+    @Override
+    public String toString() {
+        return "Account with " + id + ", type " + type + ", create at " + creationDate + ", has the balance " + sum + " and the owner " + customerId;
     }
 }

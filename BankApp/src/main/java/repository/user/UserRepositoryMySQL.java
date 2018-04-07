@@ -5,7 +5,9 @@ import model.builder.UserBuilder;
 import model.validation.Notification;
 import repository.security.RightsRolesRepository;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static database.Constants.Tables.USER;
@@ -13,17 +15,35 @@ import static database.Constants.Tables.USER;
 public class UserRepositoryMySQL implements UserRepository {
 
     private final Connection connection;
-    private final RightsRolesRepository rightsRolesRepository;
+   //private final RightsRolesRepository rightsRolesRepository;
 
 
-    public UserRepositoryMySQL(Connection connection, RightsRolesRepository rightsRolesRepository) {
+    public UserRepositoryMySQL(Connection connection) {
         this.connection = connection;
-        this.rightsRolesRepository = rightsRolesRepository;
+        //this.rightsRolesRepository = rightsRolesRepository;
     }
 
     @Override
     public List<User> findAll() {
-        return null;
+
+        List<User> users = new ArrayList<>();
+
+        try {
+            Statement statement = connection.createStatement();
+            String sql = "Select * from user";
+            ResultSet rs = statement.executeQuery(sql);
+
+            while(rs.next()) {
+
+                users.add(getUserFromResultSet(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+
     }
 
     @Override
@@ -37,7 +57,7 @@ public class UserRepositoryMySQL implements UserRepository {
                 User user = new UserBuilder()
                         .setUsername(userResultSet.getString("username"))
                         .setPassword(userResultSet.getString("password"))
-                        .setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("id")))
+                        //.setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("id")))
                         .build();
                 findByUsernameAndPasswordNotification.setResult(user);
                 return findByUsernameAndPasswordNotification;
@@ -49,6 +69,25 @@ public class UserRepositoryMySQL implements UserRepository {
             e.printStackTrace();
             throw new AuthenticationException();
         }
+    }
+
+    @Override
+    public Long findIdByUsername(String username) {
+
+        Long id = new Long(0);
+
+        try {
+            Statement statement = connection.createStatement();
+            String sql = "Select * from user where username = '" + username + "'";
+            ResultSet rs = statement.executeQuery(sql);
+
+            rs.next();
+            id = rs.getLong("id");
+            System.out.println("id din repo " + id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
     }
 
     @Override
@@ -65,9 +104,42 @@ public class UserRepositoryMySQL implements UserRepository {
             long userId = rs.getLong(1);
             user.setId(userId);
 
-            rightsRolesRepository.addRolesToUser(user, user.getRoles());
+            //rightsRolesRepository.addRolesToUser(user, user.getRoles());
 
             return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean delete(Long id) {
+
+        try {
+            Statement statement = connection.createStatement();
+            String sql = "Delete from user where id = " + id;
+            statement.executeUpdate(sql);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean update(Long id, String username) {
+
+        try {
+            PreparedStatement updateStatement = connection.prepareStatement("UPDATE user SET " +
+                    "username = ? WHERE id = " + id);
+            System.out.println(username);
+            updateStatement.setString(1, username);
+
+            updateStatement.executeUpdate();
+            return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -84,5 +156,14 @@ public class UserRepositoryMySQL implements UserRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private User getUserFromResultSet(ResultSet rs) throws SQLException {
+
+        return new UserBuilder()
+                .setId(rs.getLong("id"))
+                .setUsername(rs.getString("username"))
+                .setPassword(rs.getString("password"))
+                .build();
     }
 }

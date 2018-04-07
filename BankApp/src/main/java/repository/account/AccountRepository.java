@@ -1,18 +1,18 @@
 package repository.account;
 
 import model.Account;
-import model.Customer;
-import repository.EntityNotFoundException;
 
 import java.util.List;
 
 public interface AccountRepository {
 
-    List<Account> findAll(Customer customer);
+    List<Account> findAll(Long customerId);
 
-    boolean save(Customer customer, Account account);
+    Account findById(Long id);
 
-    boolean delete(Customer customer, Account account);
+    boolean save(String customerId, Account account);
 
-    boolean update(Customer customer, Account account);
+    boolean delete(Long id);
+
+    boolean update(Long id, int sum);
 }

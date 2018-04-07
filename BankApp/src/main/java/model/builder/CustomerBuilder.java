@@ -10,12 +10,17 @@ public class CustomerBuilder {
         customer = new Customer();
     }
 
+    public CustomerBuilder setId(Long id) {
+        customer.setId(id);
+        return this;
+    }
+
     public CustomerBuilder setName(String name) {
         customer.setName(name);
         return this;
     }
 
-    public CustomerBuilder setIdentityCard(long identityCard) {
+    public CustomerBuilder setIdentityCard(String identityCard) {
         customer.setIdentityCard(identityCard);
         return this;
     }

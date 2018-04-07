@@ -12,6 +12,7 @@ public class JDBConnectionWrapper {
     private static final String USER = "root";
     private static final String PASS = "root";
     private static final int TIMEOUT = 5;
+    public static final String USE_SSL_FALSE = "?useSSL=false";
 
     private Connection connection;
 
@@ -19,7 +20,7 @@ public class JDBConnectionWrapper {
 
         try {
             Class.forName(JDBC_DRIVER);
-            connection = DriverManager.getConnection(DB_URL + schema, USER, PASS);
+            connection = DriverManager.getConnection(DB_URL + schema + USE_SSL_FALSE, USER, PASS);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

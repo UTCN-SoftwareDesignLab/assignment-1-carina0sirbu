@@ -9,11 +9,13 @@ import static javax.swing.BoxLayout.Y_AXIS;
 public class LoginView extends JFrame{
 
     private JTextField tfUsername;
-    private JTextField tfPassword;
+    private JPasswordField tfPassword;
     private JButton btnLogin;
     private JButton btnRegister;
 
     public LoginView() throws HeadlessException {
+
+
         setSize(300, 300);
         setLocationRelativeTo(null);
         initializeFields();
@@ -22,13 +24,13 @@ public class LoginView extends JFrame{
         add(tfPassword);
         add(btnLogin);
         add(btnRegister);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setVisible(false);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setVisible(true);
     }
 
     private void initializeFields() {
-        tfUsername = new JTextField();
-        tfPassword = new JTextField();
+        tfUsername = new JTextField("acu.mihai@gmail.com");
+        tfPassword = new JPasswordField("craciun2018");
         btnLogin = new JButton("Login");
         btnRegister = new JButton("Register");
     }
@@ -47,6 +49,10 @@ public class LoginView extends JFrame{
 
     public void setRegisterButtonListener(ActionListener registerButtonListener) {
         btnRegister.addActionListener(registerButtonListener);
+    }
+
+    public String getUsernameText() {
+        return tfUsername.getText();
     }
 
 }

@@ -1,9 +1,11 @@
 package controller;
 
+import model.Customer;
 import model.User;
 import model.validation.Notification;
 import repository.user.AuthenticationException;
 import service.user.AuthenticationService;
+import view.CustomerView;
 import view.LoginView;
 
 import javax.swing.*;
@@ -15,9 +17,21 @@ public class LoginController implements ControllerFeature {
     private final LoginView loginView;
     private final AuthenticationService authenticationService;
 
-    public LoginController(LoginView loginView, AuthenticationService authenticationService) {
+    private final CustomerController customerController;
+    private final AdminController adminController;
+
+    public LoginController(LoginView loginView,
+                           AuthenticationService authenticationService,
+                           CustomerController customerController,
+                           AdminController adminController) {
+
         this.loginView = loginView;
+
         this.authenticationService = authenticationService;
+
+        this.customerController = customerController;
+        this.adminController = adminController;
+
         loginView.setLoginButtonListener(new LoginButtonListener());
         loginView.setRegisterButtonListener(new RegisterButtonListener());
     }
@@ -32,8 +46,12 @@ public class LoginController implements ControllerFeature {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
+
             String username = loginView.getUsername();
             String password = loginView.getPassword();
+
+
 
             Notification<User> loginNotification = null;
             try {
@@ -46,7 +64,16 @@ public class LoginController implements ControllerFeature {
                 if (loginNotification.hasErrors()) {
                     JOptionPane.showMessageDialog(loginView.getContentPane(), loginNotification.getFormattedErrors());
                 } else {
-                    JOptionPane.showMessageDialog(loginView.getContentPane(), "Login successful!");
+                    //JOptionPane.showMessageDialog(loginView.getContentPane(), "Login successful!");
+
+                    if (loginView.getUsername().equals("acu.mihai@gmail.com")) {
+                        adminController.setViewVisible();
+
+                    }
+                    else {
+                        customerController.setViewVisible();
+                    }
+
                 }
             }
         }

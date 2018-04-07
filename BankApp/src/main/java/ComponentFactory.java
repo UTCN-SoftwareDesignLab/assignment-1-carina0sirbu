@@ -11,7 +11,6 @@ import java.sql.Connection;
 public class ComponentFactory {
 
     private final AuthenticationService authenticationService;
-
     private final UserRepository userRepository;
     private final RightsRolesRepository rightsRolesRepository;
 
@@ -27,7 +26,7 @@ public class ComponentFactory {
     private ComponentFactory() {
         Connection connection = new DBConnectionFactory().getConnectionWrapper(false).getConnection();
         this.rightsRolesRepository = new RightsRolesRepositoryMySQL(connection);
-        this.userRepository = new UserRepositoryMySQL(connection, rightsRolesRepository);
+        this.userRepository = new UserRepositoryMySQL(connection);
         this.authenticationService = new AuthenticationServiceMySQL(this.userRepository, this.rightsRolesRepository);
     }
 

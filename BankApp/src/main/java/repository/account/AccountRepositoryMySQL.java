@@ -1,9 +1,7 @@
 package repository.account;
 
 import model.Account;
-import model.Customer;
 import model.builder.AccountBuilder;
-import repository.EntityNotFoundException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,23 +11,27 @@ public class AccountRepositoryMySQL implements AccountRepository{
 
     private final Connection connection;
 
+
     public AccountRepositoryMySQL(Connection connection) {
         this.connection = connection;
     }
 
 
     @Override
-    public List<Account> findAll(Customer customer) {
+    public List<Account> findAll(Long customerId) {
+
         List<Account> accounts = new ArrayList<>();
 
         try {
             Statement statement = connection.createStatement();
-            String sql = "Select * from account where name like %" + customer.getName() + "%";
+            String sql = "Select * from account where customerId = " + customerId;
             ResultSet rs = statement.executeQuery(sql);
 
             while (rs.next()) {
+
                 accounts.add(getAccountFromResultSet(rs));
             }
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -37,16 +39,37 @@ public class AccountRepositoryMySQL implements AccountRepository{
         return accounts;
     }
 
+    @Override
+    public Account findById(Long id) {
+
+        Account account = new Account();
+
+        try {
+            Statement statement = connection.createStatement();
+            String sql = "Select * from account where customerId = " + id;
+            ResultSet rs = statement.executeQuery(sql);
+
+
+            account = getAccountFromResultSet(rs);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return account;
+    }
+
 
     @Override
-    public boolean save(Customer customer, Account account) {
+    public boolean save(String customerId, Account account) {
 
         try {
             PreparedStatement insertStatement = connection
-                    .prepareStatement("INSERT INTO account values (null, ?, ?, ?)");
+                    .prepareStatement("INSERT INTO account values (null, ?, ?, ?, ?)");
             insertStatement.setString(1, account.getType());
             insertStatement.setString(2, String.valueOf(account.getSum()));
             insertStatement.setDate(3, new java.sql.Date(account.getCreationDate().getTime()));
+            insertStatement.setString(4, customerId);
             insertStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -56,23 +79,49 @@ public class AccountRepositoryMySQL implements AccountRepository{
     }
 
     @Override
-    public boolean delete(Customer customer, Account account) {
+    public boolean delete(Long id) {
 
-
-
-        return false;
+        try {
+            PreparedStatement insertStatement = connection
+                    .prepareStatement("DELETE from account where id = " + id);
+            insertStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public boolean update(Customer customer, Account account) {
-        return false;
+    public boolean update(Long id, int sum) {
+
+        try {
+            PreparedStatement updateStatement = connection
+                    .prepareStatement("UPDATE account SET " +
+                                        "sum = ? WHERE id = " + id);
+            updateStatement.setInt(1, sum);
+
+            updateStatement.executeUpdate();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     private Account getAccountFromResultSet(ResultSet rs) throws SQLException {
         return new AccountBuilder()
+                .setId(rs.getLong("id"))
                 .setType(rs.getString("type"))
-                .setCreationDate(rs.getDate("creation_date"))
+                .setCreationDate(rs.getDate("creationDate"))
                 .setSum(rs.getInt("sum"))
+                .setCustomerId(rs.getLong("customerId"))
                 .build();
+
+
     }
+
+
 }
