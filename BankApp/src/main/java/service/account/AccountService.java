@@ -17,4 +17,6 @@ public interface AccountService {
     boolean deleteAccount(Long id);
 
     boolean update(Long id, int sum);
+
+    Account findByAccountId(Long id);
 }

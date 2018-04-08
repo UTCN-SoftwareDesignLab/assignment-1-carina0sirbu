@@ -15,4 +15,6 @@ public interface AccountRepository {
     boolean delete(Long id);
 
     boolean update(Long id, int sum);
+
+    Account findByAccountId(Long id);
 }

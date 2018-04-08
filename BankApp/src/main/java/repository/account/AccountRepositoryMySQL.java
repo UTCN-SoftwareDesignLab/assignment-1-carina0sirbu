@@ -111,6 +111,26 @@ public class AccountRepositoryMySQL implements AccountRepository{
 
     }
 
+    @Override
+    public Account findByAccountId(Long id) {
+
+        Account account = new Account();
+
+        try {
+            Statement statement = connection.createStatement();
+            String sql = "Select * from account where id = " + id;
+            ResultSet rs = statement.executeQuery(sql);
+
+            rs.next();
+            account = getAccountFromResultSet(rs);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return account;
+    }
+
     private Account getAccountFromResultSet(ResultSet rs) throws SQLException {
         return new AccountBuilder()
                 .setId(rs.getLong("id"))

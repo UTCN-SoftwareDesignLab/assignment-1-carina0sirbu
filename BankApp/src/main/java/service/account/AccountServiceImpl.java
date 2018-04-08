@@ -42,5 +42,10 @@ public class AccountServiceImpl implements AccountService {
         return repository.update(id, sum);
     }
 
+    @Override
+    public Account findByAccountId(Long id) {
+        return repository.findByAccountId(id);
+    }
+
 
 }

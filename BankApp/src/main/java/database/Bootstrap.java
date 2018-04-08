@@ -26,7 +26,7 @@ import static database.Constants.getRolesRights;
 public class Bootstrap {
 
     private static final String ADMIN_USERNAME = "carina.sirbu@gmail.com";
-    private static final String ADMIN_PASSWORD = "ciocoLover26";
+    private static final String ADMIN_PASSWORD = "craciun2018";
 
     private static RightsRolesRepository rightsRolesRepository;
 
@@ -147,8 +147,8 @@ public class Bootstrap {
     private static void bootstrapUserRoles() throws SQLException {
 
         User admin = new UserBuilder()
-                .setUsername("carina.sirbu@gmail.com")
-                .setPassword("craciun2018")
+                .setUsername(ADMIN_USERNAME)
+                .setPassword(ADMIN_PASSWORD)
                 .build();
 
 

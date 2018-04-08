@@ -21,11 +21,14 @@ public class AdminView extends JFrame {
     private JButton btnGenerateReports;
     private JButton btnShowEmployee;
 
+    private JTextField txtStartingDate;
+    private JTextField txtEndingDate;
+
     public AdminView() throws HeadlessException {
 
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 492, 513);
+        setBounds(100, 100, 492, 550);
 
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -60,6 +63,22 @@ public class AdminView extends JFrame {
         btnGenerateReports = new JButton("Generate Report");
         btnGenerateReports.setBounds(10, 436, 452, 23);
         contentPane.add(btnGenerateReports);
+
+        txtStartingDate = new JTextField("2000-01-01");
+        txtStartingDate.setBounds(70, 470, 100, 23);
+        contentPane.add(txtStartingDate);
+
+        txtEndingDate = new JTextField("2020-12-31");
+        txtEndingDate.setBounds(215, 470, 100, 23);
+        contentPane.add(txtEndingDate);
+
+        JLabel lblBetween = new JLabel("Between");
+        lblBetween.setBounds(10, 470, 75, 23);
+        contentPane.add(lblBetween);
+
+        JLabel lblAnd = new JLabel("and");
+        lblAnd.setBounds(180, 470, 75, 23);
+        contentPane.add(lblAnd);
     }
 
     public void setBtnUpdateEmployeeListener(ActionListener updateEmployeeListener) {
@@ -86,5 +105,12 @@ public class AdminView extends JFrame {
         return model;
     }
 
+    public String getStartingDate() {
+        return txtStartingDate.getText();
 
+    }
+    public String getEndingDate() {
+        return txtEndingDate.getText();
+
+    }
 }

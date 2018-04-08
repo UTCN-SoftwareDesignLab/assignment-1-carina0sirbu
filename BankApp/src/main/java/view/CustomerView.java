@@ -24,15 +24,20 @@ public class CustomerView extends JFrame {
     private JButton btnUpdateAccount;
     private JButton btnDeleteAccount;
     private JButton btnPayBill;
+    private JButton btnTransfer;
 
     private JTextField txtIdentityCard;
     private JTextField txtPersNumCode;
     private JTextField txtSum;
     private JTextField txtBillAmount;
     private JTextField txtName;
+    private JTextField txtTransfer;
 
     private JRadioButton spendingAcc;
     private JRadioButton savingAcc;
+
+    private JComboBox<Long> accountId1;
+    private JComboBox<Long> accountId2;
 
 
     public CustomerView() throws HeadlessException {
@@ -45,6 +50,26 @@ public class CustomerView extends JFrame {
         setContentPane(contentPane);
         setLocationRelativeTo(null);
         contentPane.setLayout(null);
+
+        btnTransfer = new JButton("Transfer");
+        btnTransfer.setBounds(400, 75, 115, 23);
+        contentPane.add(btnTransfer);
+
+        JLabel lblTransfer = new JLabel("Amount:");
+        lblTransfer.setBounds(400, 40, 60, 23);
+        contentPane.add(lblTransfer);
+
+        txtTransfer = new JTextField("");
+        txtTransfer.setBounds(460, 40, 55, 23);
+        contentPane.add(txtTransfer);
+
+        accountId1 = new JComboBox<Long>();
+        accountId1.setBounds(400, 10, 50, 23);
+        contentPane.add(accountId1);
+
+        accountId2 = new JComboBox<Long>();
+        accountId2.setBounds(465, 10, 50, 23);
+        contentPane.add(accountId2);
 
         txtName = new JTextField();
         txtName.setBounds(56, 11, 213, 20);
@@ -205,6 +230,10 @@ public class CustomerView extends JFrame {
         btnPayBill.addActionListener(payBillListener);
     }
 
+    public void setBtnTransferListener(ActionListener transferListener) {
+        btnTransfer.addActionListener(transferListener);
+    }
+
     public String getNameText() {
         return txtName.getText();
     }
@@ -266,6 +295,27 @@ public class CustomerView extends JFrame {
     public String getTxtBillAmount() {
         return txtBillAmount.getText();
     }
+
+    public String getTxtTransfer() {
+        return txtTransfer.getText();
+    }
+
+    public JComboBox<Long> getAccountId1() {
+        return accountId1;
+    }
+
+    public void setAccountId1(JComboBox<Long> accountId1) {
+        this.accountId1 = accountId1;
+    }
+
+    public JComboBox<Long> getAccountId2() {
+        return accountId2;
+    }
+
+    public void setAccountId2(JComboBox<Long> accountId2) {
+        this.accountId2 = accountId2;
+    }
+
 }
 
 

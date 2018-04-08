@@ -63,6 +63,7 @@ public class CustomerController implements ControllerFeature{
         customerView.setBtnSpendingAccListener(new SpendingAccountListener());
         customerView.setBtnSavingAccListener(new SavingAccountListener());
         customerView.setBtnPayBillListener(new PayBillListener());
+        customerView.setBtnTransferListener(new TransferListener());
     }
 
 
@@ -103,6 +104,23 @@ public class CustomerController implements ControllerFeature{
         }
 
 
+    }
+
+    private void updateComboBox(JComboBox<Long> comboBox) {
+        String customerName = customerView.getNameText();
+        DefaultComboBoxModel<Long> model = new DefaultComboBoxModel<Long>();
+        List<Account> accounts;
+        try {
+            accounts = accountService.findAll(customerService.findById(customerName).getId());
+            for(Account acc : accounts)
+            {
+                model.addElement(acc.getId());
+            }
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        comboBox.setModel(model);
     }
 
     private class AddAccountListener implements ActionListener {
@@ -158,7 +176,8 @@ public class CustomerController implements ControllerFeature{
                 e1.printStackTrace();
             }
             generateAction("Added new account to customer");
-
+            updateComboBox(customerView.getAccountId1());
+            updateComboBox(customerView.getAccountId2());
 
         }
     }
@@ -204,6 +223,8 @@ public class CustomerController implements ControllerFeature{
 
             ((DefaultTableModel)customerView.getTable().getModel()).removeRow(row);
 
+            updateComboBox(customerView.getAccountId1());
+            updateComboBox(customerView.getAccountId2());
             generateAction("Deleted account for customer");
         }
     }
@@ -226,6 +247,8 @@ public class CustomerController implements ControllerFeature{
                 e1.printStackTrace();
             }
 
+            updateComboBox(customerView.getAccountId1());
+            updateComboBox(customerView.getAccountId2());
             generateAction("Deleted customer from the system");
 
 
@@ -265,6 +288,8 @@ public class CustomerController implements ControllerFeature{
             }
 
             generateAction("Searched for customer");
+            updateComboBox(customerView.getAccountId1());
+            updateComboBox(customerView.getAccountId2());
 
         }
     }
@@ -371,6 +396,32 @@ public class CustomerController implements ControllerFeature{
                 }
             }
             generateAction("Updated account information");
+        }
+    }
+
+    private class TransferListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            int transferAmount = Integer.parseInt(customerView.getTxtTransfer());
+            Long accountId1 = (long) Integer.parseInt(customerView.getAccountId1().getSelectedItem().toString());
+            System.out.println(accountId1);
+            Long accountId2 = (long) Integer.parseInt(customerView.getAccountId2().getSelectedItem().toString());
+            System.out.println(accountId2);
+
+            Account a1 = accountService.findByAccountId(accountId1);
+            Account a2 = accountService.findByAccountId(accountId2);
+
+            if(a1.getSum() - transferAmount >= 0) {
+                accountService.update(a1.getId(), a1.getSum() - transferAmount);
+                accountService.update(a2.getId(), a2.getSum() + transferAmount);
+                JOptionPane.showMessageDialog(customerView, "Transfer successful!");
+            } else {
+                JOptionPane.showMessageDialog(customerView, "Error while trying to transfer money");
+            }
+            generateAction("Money transfer");
+            updateTable();
+
         }
     }
 }

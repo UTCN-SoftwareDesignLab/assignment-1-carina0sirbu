@@ -11,6 +11,10 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class AdminController implements ControllerFeature {
@@ -81,21 +85,30 @@ public class AdminController implements ControllerFeature {
     private class GenerateReportListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+
+
             reportController.setViewVisible();
             reportController.setReportView("");
 
-            String username = adminView.getTable().getValueAt(adminView.getTable().getSelectedRow(), 1).toString();
+            DateFormat formatter = new SimpleDateFormat("yy-MM-dd");
 
-            List<Action> actions = actionService.getActionsByEmployeeId((long) Integer.parseInt(adminView.getTable().getValueAt(adminView.getTable().getSelectedRow(), 0).toString()));
+            try {
+                Date startingDate = formatter.parse(adminView.getStartingDate());
+                Date endingDate = formatter.parse(adminView.getEndingDate());
 
+                String username = adminView.getTable().getValueAt(adminView.getTable().getSelectedRow(), 1).toString();
 
+                List<Action> actions = actionService.getActionsByEmployeeId((long) Integer.parseInt(adminView.getTable().getValueAt(adminView.getTable().getSelectedRow(), 0).toString()));
 
-            for (Action action: actions) {
+                for (Action action: actions) {
+                    if(action.getDate().after(startingDate) && action.getDate().before(endingDate))
+                        reportController.setReportView(reportController.getReportText() + action + "\n");
+                }
 
-                reportController.setReportView(reportController.getReportText() + action + "\n");
+                reportController.setEmployeeName(username);
+            } catch (ParseException e1) {
+                e1.printStackTrace();
             }
-
-            reportController.setEmployeeName(username);
         }
     }
 
