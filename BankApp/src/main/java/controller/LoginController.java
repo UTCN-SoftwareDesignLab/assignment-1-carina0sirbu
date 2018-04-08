@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 
 public class LoginController implements ControllerFeature {
 
+    private static final String ADMIN_USERNAME = "carina.sirbu@gmail.com";
     private final LoginView loginView;
     private final AuthenticationService authenticationService;
 
@@ -66,7 +67,7 @@ public class LoginController implements ControllerFeature {
                 } else {
                     //JOptionPane.showMessageDialog(loginView.getContentPane(), "Login successful!");
 
-                    if (loginView.getUsername().equals("acu.mihai@gmail.com")) {
+                    if (loginView.getUsername().equals(ADMIN_USERNAME)) {
                         adminController.setViewVisible();
 
                     }

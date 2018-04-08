@@ -32,7 +32,7 @@ public class Bootstrap {
 
 
     public static void main(String[] args) throws SQLException{
-        //dropAll();
+        dropAll();
 
         bootstrapTables();
 
@@ -145,6 +145,11 @@ public class Bootstrap {
     }
 
     private static void bootstrapUserRoles() throws SQLException {
+
+        User admin = new UserBuilder()
+                .setUsername("carina.sirbu@gmail.com")
+                .setPassword("craciun2018")
+                .build();
 
 
     }

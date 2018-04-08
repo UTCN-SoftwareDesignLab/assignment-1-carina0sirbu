@@ -49,7 +49,7 @@ public class AccountRepositoryMySQL implements AccountRepository{
             String sql = "Select * from account where customerId = " + id;
             ResultSet rs = statement.executeQuery(sql);
 
-
+            rs.next();
             account = getAccountFromResultSet(rs);
 
         } catch (SQLException e) {

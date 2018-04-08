@@ -62,6 +62,7 @@ public class CustomerController implements ControllerFeature{
         customerView.setBtnUpdateCustomerListener(new UpdateCustomerListener());
         customerView.setBtnSpendingAccListener(new SpendingAccountListener());
         customerView.setBtnSavingAccListener(new SavingAccountListener());
+        customerView.setBtnPayBillListener(new PayBillListener());
     }
 
 
@@ -345,5 +346,31 @@ public class CustomerController implements ControllerFeature{
                 .build();
 
         actionService.save(action);
+    }
+
+    private class PayBillListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            int row = customerView.getTable().getSelectedRow();
+
+            Long id = (long) Integer.parseInt((customerView.getTable().getValueAt(row, 0)).toString());
+            int sum = Integer.parseInt(customerView.getTable().getValueAt(row, 2).toString());
+
+            int sumToPay = Integer.parseInt(customerView.getTxtBillAmount());
+
+            if (sum < sumToPay) {
+                JOptionPane.showMessageDialog(customerView,"Not enough money in the account");
+            }
+            else {
+                if (accountService.update(id, sum-sumToPay)) {
+                    JOptionPane.showMessageDialog(customerView, "Successful payment");
+                    updateTable();
+                } else {
+                    JOptionPane.showMessageDialog(customerView, "Error while trying to process payment");
+                }
+            }
+            generateAction("Updated account information");
+        }
     }
 }

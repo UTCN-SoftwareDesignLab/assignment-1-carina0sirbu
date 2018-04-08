@@ -23,10 +23,12 @@ public class CustomerView extends JFrame {
     private JButton btnAddAccount;
     private JButton btnUpdateAccount;
     private JButton btnDeleteAccount;
+    private JButton btnPayBill;
 
     private JTextField txtIdentityCard;
     private JTextField txtPersNumCode;
     private JTextField txtSum;
+    private JTextField txtBillAmount;
     private JTextField txtName;
 
     private JRadioButton spendingAcc;
@@ -132,6 +134,20 @@ public class CustomerView extends JFrame {
         lblSum.setBounds(227, 355, 46, 14);
         contentPane.add(lblSum);
 
+
+
+        JLabel labelBill = new JLabel("<html>Select account and <br/>insert bill amount</html>", SwingConstants.CENTER);
+        labelBill.setBounds(350, 150, 150, 60);
+        contentPane.add(labelBill);
+
+        txtBillAmount = new JTextField();
+        txtBillAmount.setBounds(340, 220, 50, 20);
+        contentPane.add(txtBillAmount);
+
+        btnPayBill = new JButton("Process");
+        btnPayBill.setBounds(400, 220, 100, 30);
+        contentPane.add(btnPayBill);
+
         spendingAcc = new JRadioButton("Spending Account");
         spendingAcc.setBounds(350, 250, 150, 50);
         contentPane.add(spendingAcc);
@@ -183,6 +199,10 @@ public class CustomerView extends JFrame {
 
     public void setBtnSavingAccListener(ActionListener savingAccListener) {
         savingAcc.addActionListener(savingAccListener);
+    }
+
+    public void setBtnPayBillListener(ActionListener payBillListener) {
+        btnPayBill.addActionListener(payBillListener);
     }
 
     public String getNameText() {
@@ -243,7 +263,9 @@ public class CustomerView extends JFrame {
         txtSum.setEditable(false);
     }
 
-
+    public String getTxtBillAmount() {
+        return txtBillAmount.getText();
+    }
 }
 
 
